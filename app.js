@@ -8,9 +8,11 @@ const server = app.listen(8888, () => {
 //     res.send('hello cms!!!!');
 // });
 app.set('views',__dirname+"/views");//디렉토리 설정
+app.use('/external', express.static(__dirname+"/external"))
 app.use('/js', express.static(__dirname+"/js"))
 app.use('/node_modules', express.static(__dirname+"/node_modules"))
 app.use('/stls', express.static(__dirname+"/stls"))
+app.use('/glbs', express.static(__dirname+"/glbs"))
 app.set('view engine', 'ejs');//엔진 설정 ejs는 자바스크립트랑 html을 같이 쓸수있게 해주는것 jsp랑 비슷한거
 app.engine('html', require('ejs').renderFile);//ejs를 설치해줘야됨 npm install ejs --save
 app.get('/test1', (req, res) => {
@@ -36,4 +38,10 @@ app.get('/test7', (req, res) => {
 });
 app.get('/test8', (req, res) => {
     res.render('test_08.html');//renger라는게 있음
+});
+app.get('/test9', (req, res) => {
+    res.render('test_09.html');//renger라는게 있음
+});
+app.get('/test10', (req, res) => {
+    res.render('test_10.html');//renger라는게 있음
 });
