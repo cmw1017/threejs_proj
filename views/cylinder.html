@@ -51,47 +51,43 @@
         })
       }
 
-      function createTorusPacking() {
+      // 제대로 안됨
+      // function createTorusPacking() {
 
-        if ( !state ) return;
+      //   if ( !state ) return;
 
-        // if ( meshNum >= 1) return;
+      //   meshNum++;
+      //   console.log(meshNum);
 
-        meshNum++;
-        console.log(meshNum);
+      //   const loader1 = new THREE.GLTFLoader().load('/glbs/torus.glb', function (gltf) {
+      //     const mesh = gltf.scene.children[0]
+      //     mesh.traverse(child => {
+      //       if (child.isMesh) {
+      //         child.castShadow = child.receiveShadow = false
+      //         child.material.metalness = 0
+      //         child.material.roughness = 1
+      //       }
+      //     })
+      //     mesh.scale.set(7, 7, 7)
+      //     mesh.position.set(-0.3, -0.6, -1.675)
 
-        const loader1 = new THREE.GLTFLoader().load('/glbs/torus.glb', function (gltf) {
-          const mesh = gltf.scene.children[0]
-          mesh.traverse(child => {
-            if (child.isMesh) {
-              child.castShadow = child.receiveShadow = false
-              child.material.metalness = 0
-              child.material.roughness = 1
-            }
-          })
-          mesh.scale.set(7, 7, 7)
-          mesh.position.set(-0.3, -0.6, -1.675)
-          // mesh.rotation.set(Math.PI * 8 / 12, 0, Math.PI * 24 / 12)
+      //     const object = new ExtendedObject3D()
+      //     object.add(mesh.clone())
+      //     object.position.set(Math.random() * 2 - 1, 5, Math.random() * 2 - 1)
+      //     object.scale.set(0.2, 0.2, 0.2)
 
-          const object = new ExtendedObject3D()
-          object.add(mesh.clone())
+      //     const config = { radius: 0.5, tube: 0.2, tubularSegments: 16}
+	    //     const quat = new THREE.Quaternion();
+	    //     quat.set( 0, 0, 0, meshNum );
 
-          // object.add(cylinder.clone())
-          object.position.set(0, 5, 0)
-          // object.rotation.set(Math.PI / 4, 0, 0)
+      //     const shape = { shape: 'torus', ...config, quat}
+      //     let option = { addChildren: false, ...shape }
 
-          const config = { radius: 0.5, tube: 0.2, tubularSegments: 16}
-	        const quat = new THREE.Quaternion();
-	        quat.set( 0, 0, 0, meshNum );
-
-          const shape = { shape: 'torus', ...config, quat}
-          let option = { addChildren: false, ...shape }
-
-          scene.add(object)
-          physics.add.existing(object, option)
-          object.body.setCollisionFlags(2)
-        })
-      }
+      //     scene.add(object)
+      //     physics.add.existing(object, option)
+      //     // object.body.setCollisionFlags(2)
+      //   })
+      // }
 
       function saveSTL( scene, name ){  
         var exporter = new STLExporter();
@@ -127,7 +123,7 @@
 
         // initialize physics
         physics = new AmmoPhysics(scene)
-        physics.debug.enable(true)
+        // physics.debug.enable(true)
 
         
         // add a ground
@@ -199,7 +195,7 @@
 
         const clock = new THREE.Clock()
 
-        setInterval( createTorusPacking, 1000 );
+        setInterval( createCylinder, 100 );
 
         const animate = () => {
           // update physics
