@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Play with Physics Bodies</title>
+    <script src="/external/js/examples.js?ver=1.1.1"></script>
+    <script src="/external/lib/enable3d/enable3d.framework.0.23.0.min.js"></script>
+  </head>
+
+  <body>
+    <div id="info">Ammo.js physics soft body rope demo Press Q or A to move the arm.<button id="export">export</button><br /></div>
+    <script type = "module">
+      import { STLExporter } from "/node_modules/three/examples/jsm/exporters/STLExporter.js";
+      const { Project, Scene3D, PhysicsLoader, THREE, ExtendedObject3D, enable3d } = ENABLE3D
+
+      class MainScene extends Scene3D {
+        async create() {
+          this.count = 0
+          const features = await this.warpSpeed()
+
+          // this.physics.debug?.enable()
+          
+          // 속이 빈 실린더 생성
+          const extrudeSettings = {
+            depth: 10,
+            steps: 1,
+            bevelEnabled: false,
+            curveSegments: 8
+          }
+
+          const arcShape = new THREE.Shape()
+          arcShape.absarc(0, 0, 10, 0, Math.PI * 2, 0, false)
+
+          const holePath = new THREE.Path()
+          holePath.absarc(0, 0, 9, 0, Math.PI * 2, true)
+          arcShape.holes.push(holePath)
+
+          const geo = new THREE.ExtrudeBufferGeometry(arcShape, extrudeSettings)
+          const mat = new THREE.MeshBasicMaterial({ color: 'khaki' })
+          const mesh = new THREE.Mesh(geo, mat)
+          geo.translate(0, 0, -5) // somehow this has an offset as well :
+          mesh.rotateX(Math.PI / 2)
+          mesh.position.y = 5
+          this.scene.add(mesh)
+          this.physics.add.existing(mesh, { shape: 'hacd' })
+          mesh.body.setCollisionFlags(2)
+
+
+          document.addEventListener('keydown', e => {
+            switch (e.keyCode) {
+              case 32: // space
+                // add hacd shape to existing mesh
+                let torus = this.add.torus({ radius: 0.5, tube: 0.2, tubularSegments: 12, x: 0, y: 2, mass: 1 })
+                let torus2 = this.add.torus({ radius: 0.5, tube: 0.2, tubularSegments: 12, x: 0, y: 0, mass: 1 })
+                torus2.rotation.set(Math.PI /2 ,0, 0)
+                torus.add(torus2)
+                torus.position.set(Math.random() * 10 - 5, 10, Math.random() * 10 - 5)
+                this.physics.add.existing(torus)
+                this.count++;
+                console.log(this.count)
+                break
+            }
+          })
+
+          document.getElementById( 'export' ).addEventListener('click',
+            function() {
+              var exporter = new STLExporter();
+              var blob = new Blob( [ exporter.parse( this.scene ) ] );
+              var a = document.body.appendChild( document.createElement( 'a' ) );
+              a.href = window.URL.createObjectURL( blob );
+              a.download = 'file.stl';
+              a.click();
+          })
+        }
+      }
+      PhysicsLoader('/external/lib/ammo/moz', () => new Project({ scenes: [MainScene] }))
+
+    </script>
+  </body>
+</html>
