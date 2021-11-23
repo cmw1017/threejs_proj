@@ -42,8 +42,8 @@ app.get('/test8', (req, res) => {
 app.get('/test9', (req, res) => {
     res.render('test_09.html');//renger라는게 있음
 });
-app.get('/test10', (req, res) => {
-    res.render('test_10.html');//renger라는게 있음
+app.get('/double_torus', (req, res) => {
+    res.render('double_torus.html');//renger라는게 있음
 });
 app.get('/cylinder', (req, res) => {
     res.render('cylinder.html');//renger라는게 있음

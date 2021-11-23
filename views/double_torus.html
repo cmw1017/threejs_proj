@@ -8,18 +8,19 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Play with Physics Bodies</title>
-    <script src="/external/js/examples.js?ver=1.1.1"></script>
+    <!-- <script src="/external/js/examples.js?ver=1.1.1"></script> -->
     <script src="/external/lib/enable3d/enable3d.framework.0.23.0.min.js"></script>
   </head>
 
   <body>
-    <div id="info">Ammo.js physics soft body rope demo Press Q or A to move the arm.<button id="export">export</button><br /></div>
+    <div id="info">Create Shape KEY : space / Export KEY : e</div>
     <script type = "module">
       import { STLExporter } from "/node_modules/three/examples/jsm/exporters/STLExporter.js";
       const { Project, Scene3D, PhysicsLoader, THREE, ExtendedObject3D, enable3d } = ENABLE3D
 
       class MainScene extends Scene3D {
         async create() {
+          let scene_var = this.scene 
           this.count = 0
           const features = await this.warpSpeed()
 
@@ -64,18 +65,32 @@
                 this.count++;
                 console.log(this.count)
                 break
+              case 69: //e
+                console.log("Press e")
+                var exporter = new STLExporter();
+                var blob = new Blob( [ exporter.parse( this.scene ) ] );
+                var a = document.body.appendChild( document.createElement( 'a' ) );
+                a.href = window.URL.createObjectURL( blob );
+                a.download = 'file.stl';
+                a.click();
+                break
             }
           })
 
-          document.getElementById( 'export' ).addEventListener('click',
-            function() {
-              var exporter = new STLExporter();
-              var blob = new Blob( [ exporter.parse( this.scene ) ] );
-              var a = document.body.appendChild( document.createElement( 'a' ) );
-              a.href = window.URL.createObjectURL( blob );
-              a.download = 'file.stl';
-              a.click();
-          })
+          // document.getElementById( 'export' ).addEventListener('click',
+          //   function() {
+          //     console.log(scene_var)
+          //     console.log(new THREE.Scene())
+          //     var exporter = new STLExporter();
+          //     var blob = new Blob( [ exporter.parse( scene_var ) ] );
+          //     var a = document.body.appendChild( document.createElement( 'a' ) );
+          //     a.href = window.URL.createObjectURL( blob );
+          //     a.download = 'file.stl';
+          //     a.click();
+          // })
+
+
+
         }
       }
       PhysicsLoader('/external/lib/ammo/moz', () => new Project({ scenes: [MainScene] }))
