@@ -150,7 +150,7 @@ function addMesh() {
     fixDef.shape = new b2CircleShape;
 
     const loader = new STLLoader();
-	loader.load( 'stls/file_pack.stl', function ( geometry ) {
+	loader.load( 'stls/pack.stl', function ( geometry ) {
 
 		const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
 		mesh = new THREE.Mesh( geometry, material );
